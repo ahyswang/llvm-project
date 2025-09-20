@@ -97,6 +97,11 @@ static Value createLinalgBodyCalculationForElementwiseOp(
     return arith::MaxSIOp::create(rewriter, loc, args[0], neg);
   }
 
+  // tosa::MyAddOp
+  if (isa<tosa::MyAddOp>(op) && isa<FloatType>(elementTy))
+    return arith::AddFOp::create(rewriter, loc, resultTypes, args);
+  if (isa<tosa::MyAddOp>(op) && isa<IntegerType>(elementTy))
+    return arith::AddIOp::create(rewriter, loc, resultTypes, args);
   // tosa::AddOp
   if (isa<tosa::AddOp>(op) && isa<FloatType>(elementTy))
     return arith::AddFOp::create(rewriter, loc, resultTypes, args);
@@ -2913,6 +2918,7 @@ void mlir::tosa::populateTosaToLinalgConversionPatterns(
 
   patterns->add<
       // clang-format off
+      PointwiseConverter<tosa::MyAddOp>,
       PointwiseConverter<tosa::AddOp>,
       PointwiseConverter<tosa::SubOp>,
       PointwiseConverter<tosa::MulOp>,

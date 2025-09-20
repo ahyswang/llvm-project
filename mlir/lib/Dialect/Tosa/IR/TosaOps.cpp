@@ -3119,6 +3119,7 @@ static LogicalResult NAryInferReturnTypes(
     return NAryInferReturnTypes(operands, inferredReturnShapes);               \
   }
 
+NARY_SHAPE_INFER(tosa::MyAddOp)
 NARY_SHAPE_INFER(tosa::AbsOp)
 NARY_SHAPE_INFER(tosa::AddOp)
 NARY_SHAPE_INFER(tosa::ArithmeticRightShiftOp)

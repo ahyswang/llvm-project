@@ -1,0 +1,5 @@
+*_opt.mlir
+*_llvm.mlir 
+*.ll 
+*.o 
+*.out

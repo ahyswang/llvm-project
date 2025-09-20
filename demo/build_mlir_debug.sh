@@ -10,5 +10,7 @@ cmake -G Ninja ../llvm \
    -DENABLE_LIBOMPTARGET=OFF \
    -DLLVM_ENABLE_LIBEDIT=OFF
 
-cmake --build . -- ${MAKEFLAGS}
-cmake --build . --target check-mlir
+# cmake --build . -- ${MAKEFLAGS}
+# cmake --build . --target check-mlir
+cmake --build . --target mlir-opt
+# ninja -j16 mlir-opt

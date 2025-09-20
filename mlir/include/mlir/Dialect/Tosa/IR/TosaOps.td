@@ -615,6 +615,48 @@ def Tosa_TanhOp : Tosa_ElementwiseUnaryOp<"tanh"> {
 //===----------------------------------------------------------------------===//
 
 //===----------------------------------------------------------------------===//
+// Operator: myadd
+//===----------------------------------------------------------------------===//
+def Tosa_MyAddOp : Tosa_ElementwiseOp<"myadd", [ 
+    Commutative,
+    SameOperandsAndResultElementType]> {
+  let summary = "Elementwise addition operator.";
+
+  let description = [{
+    Elementwise addition of input1 and input2. Axis of size 1 will be broadcast,
+    as necessary. Rank of input tensors must match.
+
+    Example:
+
+    ```mlir
+    // Elementwise addition.
+    %out = tosa.myadd %input1, %input2 : tensor<12x6xf32>, tensor<12x6xf32> -> tensor<12x6xf32>
+
+    // Elementwise addition with broadcasting.
+    %out = tosa.myadd %input1, %input2 : tensor<12x6xsi32>, tensor<1x1xsi32> -> tensor<12x6xsi32>
+    ```
+  }];
+
+  let arguments = (ins
+    Tosa_Tensor:$input1,
+    Tosa_Tensor:$input2
+  );
+
+  let results = (outs
+    Tosa_Tensor:$output
+  );
+
+  list<Availability> availability = [
+    Profile<[Tosa_PRO_INT, Tosa_PRO_FP]>,
+    Extension<[Tosa_EXT_BF16]>,
+  ];
+
+  let hasFolder = 1;
+
+  let assemblyFormat = "operands attr-dict `:` functional-type(operands, results)";
+}
+
+//===----------------------------------------------------------------------===//
 // Operator: add
 //===----------------------------------------------------------------------===//
 def Tosa_AddOp : Tosa_ElementwiseOp<"add", [
