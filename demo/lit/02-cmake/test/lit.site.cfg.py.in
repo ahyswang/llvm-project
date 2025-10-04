@@ -1,0 +1,6 @@
+import os 
+
+config.src_root = r'@CMAKE_SOURCE_DIR@' 
+config.obj_root = r'@CMAKE_BINARY_DIR@'
+# 导致指定的配置文件
+lit_config.load_config(config, os.path.join(config.src_root, 'test/lit.cfg.py'))

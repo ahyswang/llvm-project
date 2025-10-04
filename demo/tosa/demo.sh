@@ -1,6 +1,6 @@
 #!/bin/bash 
 
-BUILD_DIR=../build_debug/
+BUILD_DIR=../../build_debug/
 MLIR_OPT=$BUILD_DIR/bin/mlir-opt
 MLIR_TRANSLATE=$BUILD_DIR/bin/mlir-translate
 MLIR_CPU_RUNNER=$BUILD_DIR/bin/mlir-runner
