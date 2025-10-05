@@ -40,4 +40,36 @@ def Standalone_FooOp : Standalone_Op<"foo", [Pure,
     }];
 }
 
+def Standalone_AddOp : Standalone_Op<"add", [
+    Commutative,
+    SameOperandsAndResultType]> {
+    let summary = "Elementwise addition operator.";
+
+    let description = [{
+        Elementwise addition of input1 and input2. Axis of size 1 will be broadcast,
+        as necessary. Rank of input tensors must match.
+
+        Example:
+
+        ```mlir
+        // Elementwise addition.
+        %out = standalone.add %input1, %input2 : (tensor<12x6xf32>, tensor<12x6xf32>) -> tensor<12x6xf32>
+
+        // Elementwise addition with broadcasting.
+        %out = standalone.add %input1, %input2 : (tensor<12x6xsi32>, tensor<1x1xsi32>) -> tensor<12x6xsi32>
+        ```
+    }];
+
+    let arguments = (ins 
+        Standalone_Tensor:$input1,
+        Standalone_Tensor:$input2
+    );
+
+    let results = (outs
+        Standalone_Tensor:$output
+    );
+
+    let assemblyFormat = "operands attr-dict `:` functional-type(operands, results)";
+}
+
 #endif // STANDALONE_OPS

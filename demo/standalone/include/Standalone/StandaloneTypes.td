@@ -13,6 +13,42 @@ include "mlir/IR/AttrTypeBase.td"
 include "Standalone/StandaloneDialect.td"
 
 //===----------------------------------------------------------------------===//
+// Non-Quantized Signed Integer Types.
+// Used to express accumulator results or compare results.
+//===----------------------------------------------------------------------===//
+
+def Standalone_Int : AnyTypeOf<[AnyUnsignedInteger,
+                          AnySignlessInteger]>;
+
+
+//===----------------------------------------------------------------------===//
+// Multi-category types.
+//===----------------------------------------------------------------------===//
+def Standalone_AnyNumber : AnyTypeOf<[Standalone_Int, AnyFloat],
+                                "number">;
+
+//===----------------------------------------------------------------------===//
+// Standalone Tensor Conformance
+//===----------------------------------------------------------------------===//
+
+def HasNo0Dimensions : And<[
+    IsRankedTensorTypePred,
+    CPred<"::llvm::all_of(::llvm::cast<::mlir::RankedTensorType>($_self).getShape(), [](auto v) { return v != 0; })">]>;
+
+
+class StandaloneTensorOf<
+    list<Type> allowedTypes, string summary = "standalone-conformant tensor">
+    : TensorOf<allowedTypes, [Or<[HasNo0Dimensions, IsUnrankedTensorTypePred]>], summary>;
+
+
+//===----------------------------------------------------------------------===//
+// Tensor types
+//===----------------------------------------------------------------------===//
+
+// Either ranked or unranked tensor of Standalone supported element types.
+def Standalone_Tensor : StandaloneTensorOf<[AnyFloat, AnySignlessInteger, AnyUnsignedInteger]>;
+
+//===----------------------------------------------------------------------===//
 // Standalone type definitions
 //===----------------------------------------------------------------------===//
 
