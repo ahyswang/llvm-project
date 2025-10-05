@@ -27,5 +27,4 @@ def StandaloneSwitchBarFoo: Pass<"standalone-switch-bar-foo", "::mlir::ModuleOp"
   }];
 }
 
-
 #endif // STANDALONE_PASS
