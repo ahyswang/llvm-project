@@ -1,5 +1,5 @@
 #!/bin/bash 
 
-export PATH=/Users/wangyansheng/code/onnx-mlir/llvm-project/build/bin/:$PATH
+export PATH=$PWD/../../build_debug/bin/:$PATH
 
-lit ./ -v
+llvm-lit ./ -v
