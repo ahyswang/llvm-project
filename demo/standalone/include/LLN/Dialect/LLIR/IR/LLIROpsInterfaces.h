@@ -1,0 +1,9 @@
+
+#ifndef LLN_MLIR_DIALECT_LLIR_LLIROPSINTERFACES_H
+#define LLN_MLIR_DIALECT_LLIR_LLIROPSINTERFACES_H
+
+#include "mlir/IR/OpDefinition.h"
+
+#include "LLN/Dialect/LLIR/IR/LLIROpsInterfaces.h.inc"
+
+#endif // LLN_MLIR_DIALECT_LLIR_LLIROPSINTERFACES_H
