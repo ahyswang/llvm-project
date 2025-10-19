@@ -41,10 +41,9 @@ def Standalone_FooOp : Standalone_Op<"foo", [Pure,
 }
 
 
-def Standalone_AddOp: Standalone_Op<"add", [ 
+def Standalone_AddOp: Standalone_ElementwiseOp<"add", [ 
     Commutative,
-    SameOperandsAndResultElementType,
-    DeclareOpInterfaceMethods<InferShapedTypeOpInterface,["inferReturnTypeComponents"]>
+    SameOperandsAndResultElementType
     ]> {
   let summary = "add operator";
 

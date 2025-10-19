@@ -15,7 +15,30 @@
 #include "mlir/Interfaces/InferTypeOpInterface.h"
 #include "mlir/Interfaces/SideEffectInterfaces.h"
 
+
+namespace mlir {
+
+//===----------------------------------------------------------------------===//
+// Operation Trait Types
+//===----------------------------------------------------------------------===//
+
+namespace OpTrait {
+namespace standalone {
+        
+/// This class indicates that an op is tosa-elementwise (permits broadcasting,
+/// unlike Elementwise trait).
+template <typename ConcreteType>
+class StandaloneElementwiseOperator
+    : public TraitBase<ConcreteType, StandaloneElementwiseOperator> {};
+
+} // standalone
+} // namespace Traits 
+
+} // namespace mlir
 #define GET_OP_CLASSES
 #include "Standalone/StandaloneOps.h.inc"
+
+
+
 
 #endif // STANDALONE_STANDALONEOPS_H

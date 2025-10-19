@@ -9,8 +9,13 @@
 #ifndef STANDALONE_DIALECT
 #define STANDALONE_DIALECT
 
+include "mlir/IR/AttrTypeBase.td"
+include "mlir/IR/EnumAttr.td"
 include "mlir/IR/OpBase.td"
+
+include "mlir/Interfaces/SideEffectInterfaces.td"
 include "mlir/Interfaces/InferTypeOpInterface.td"
+include "mlir/Interfaces/LoopLikeInterface.td"
 
 //===----------------------------------------------------------------------===//
 // Standalone dialect definition.
@@ -59,6 +64,11 @@ def StandaloneOpInterface : OpInterface<"StandaloneOp"> {
   }];
 }
 
+// Permits broadcasting. Elementwise trait is too strict.
+def StandaloneElementwiseOperator : NativeOpTrait<"StandaloneElementwiseOperator"> {
+  let cppNamespace = "mlir::OpTrait::standalone";
+}
+
 //===----------------------------------------------------------------------===//
 // TOSA Operator Class.
 //===----------------------------------------------------------------------===//
@@ -75,5 +85,19 @@ class Standalone_Opv2<string mnemonic, list<Trait> traits = []> :
     Op<Standalone_Dialect, mnemonic, !listconcat(traits, [StandaloneOpInterface,
     StandaloneResolvableShapeOperands])> {
 }
+
+class Standalone_ElementwiseOp1111<string mnemonic, list<Trait> traits = []> :
+    Standalone_Op<mnemonic, !listconcat(traits, [
+              DeclareOpInterfaceMethods<InferShapedTypeOpInterface,["inferReturnTypeComponents"]>,
+              ResultsBroadcastableShape,
+              StandaloneElementwiseOperator,
+              SameOperandsAndResultRank,
+              Pure])> {}
+
+class Standalone_ElementwiseOp<string mnemonic, list<Trait> traits = []> :
+    Standalone_Op<mnemonic, !listconcat(traits, [
+              DeclareOpInterfaceMethods<InferShapedTypeOpInterface,["inferReturnTypeComponents"]>,
+              StandaloneElementwiseOperator
+              ])> {}
 
 #endif // STANDALONE_DIALECT
