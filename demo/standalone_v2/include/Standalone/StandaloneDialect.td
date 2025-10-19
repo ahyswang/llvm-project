@@ -35,6 +35,8 @@ def Standalone_Dialect : Dialect {
     let extraClassDeclaration = [{
         void registerTypes();
     }];
+
+    let hasConstantMaterializer = 1; 
 }
 
 //===----------------------------------------------------------------------===//
@@ -62,6 +64,11 @@ def StandaloneOpInterface : OpInterface<"StandaloneOp"> {
   let description = [{
     Implemented by ops that correspond to the Tosa specification.
   }];
+}
+
+// Permits broadcasting. Elementwise trait is too strict.
+def StandaloneOperatorTrait : NativeOpTrait<"StandaloneOperatorTrait"> {
+  let cppNamespace = "mlir::OpTrait::standalone";
 }
 
 // Permits broadcasting. Elementwise trait is too strict.
@@ -97,6 +104,7 @@ class Standalone_ElementwiseOp1111<string mnemonic, list<Trait> traits = []> :
 class Standalone_ElementwiseOp<string mnemonic, list<Trait> traits = []> :
     Standalone_Op<mnemonic, !listconcat(traits, [
               DeclareOpInterfaceMethods<InferShapedTypeOpInterface,["inferReturnTypeComponents"]>,
+              StandaloneOperatorTrait,
               StandaloneElementwiseOperator
               ])> {}
 

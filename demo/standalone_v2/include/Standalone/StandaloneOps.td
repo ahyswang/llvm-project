@@ -9,9 +9,16 @@
 #ifndef STANDALONE_OPS
 #define STANDALONE_OPS
 
-include "Standalone/StandaloneTypes.td"
+include "mlir/IR/OpBase.td"
+
 include "mlir/Interfaces/InferTypeOpInterface.td"
 include "mlir/Interfaces/SideEffectInterfaces.td"
+include "mlir/Interfaces/LoopLikeInterface.td"
+include "mlir/Bytecode/BytecodeOpInterface.td"
+
+include "Standalone/StandaloneTypes.td"
+include "Standalone/StandaloneDialect.td"
+
 
 def Standalone_FooOp : Standalone_Op<"foo", [Pure,
                                              SameOperandsAndResultType]> {
@@ -40,6 +47,13 @@ def Standalone_FooOp : Standalone_Op<"foo", [Pure,
     }];
 }
 
+//===----------------------------------------------------------------------===//
+// Operator Class: Elementwise Binary Operators.
+//===----------------------------------------------------------------------===//
+
+//===----------------------------------------------------------------------===//
+// Operator: add
+//===----------------------------------------------------------------------===//
 
 def Standalone_AddOp: Standalone_ElementwiseOp<"add", [ 
     Commutative,
@@ -48,32 +62,71 @@ def Standalone_AddOp: Standalone_ElementwiseOp<"add", [
   let summary = "add operator";
 
   let description = [{
-    1.Op Introduction
     Elementwise addition of input1 and input2. Axis of size 1 will be broadcast,
-    as necessary.
+    as necessary. Rank of input tensors must match.
 
-    2.Math formula
-    ```math
-        output = input1 + input2;
+    Example:
+
+    ```mlir
+    // Elementwise addition.
+    %out = standalone.add %input1, %input2 : tensor<12x6xf32>, tensor<12x6xf32> -> tensor<12x6xf32>
+
+    // Elementwise addition with broadcasting.
+    %out = standalone.add %input1, %input2 : tensor<12x6xsi32>, tensor<1x1xsi32> -> tensor<12x6xsi32>
     ```
-    Axis of size 1 will be broadcast if necessary.
-
-    3.activation and weight
-
-    4.attribute
-
   }];
 
   let arguments = (ins
-    Variadic<AnyTensor>:$inputs
+    //Variadic<AnyTensor>:$inputs
+    AnyTensor:$input1,
+    AnyTensor:$input2
   );
 
-  let results = (outs AnyTensor:$output);
+  let results = (outs 
+    AnyTensor:$output
+  );
   //let hasCanonicalizer = 1;
-
+  let hasFolder = 1;
   //let hasCustomAssemblyFormat = 1;
   //let assemblyFormat = "operands attr-dict `:` functional-type(operands, results)";
 }
  
+
+//===----------------------------------------------------------------------===//
+// Operator Class: Data Nodes.
+//===----------------------------------------------------------------------===//
+
+//===----------------------------------------------------------------------===//
+// Operator: const
+//===----------------------------------------------------------------------===//
+ 
+def Standalone_ConstOp : Standalone_Op<"const", [ConstantLike, Pure,
+                                      AllShapesMatch<["values", "output"]>,
+                                      FirstAttrDerivedResultType]> {
+  let summary = "Constant operator.";
+
+  let description = [{
+    A node containing constant data for use as the input to an operation. May
+    hold data in any of the supported data formats.
+
+    Example:
+
+    ```mlir
+    // Generic form
+    %out = "standalone.const"() {values = dense<0> : tensor<2x3xi32>} : () -> tensor<2x3xi32>
+    ```
+  }];
+
+  let arguments = (ins
+    ElementsAttr:$values
+  );
+
+  let results = (outs
+    AnyTensor:$output
+  );
+
+  let hasFolder = 1;
+  let hasVerifier = 1;
+}
 
 #endif // STANDALONE_OPS

@@ -14,7 +14,7 @@
 #include "mlir/IR/OpDefinition.h"
 #include "mlir/Interfaces/InferTypeOpInterface.h"
 #include "mlir/Interfaces/SideEffectInterfaces.h"
-
+#include "mlir/Bytecode/BytecodeOpInterface.h"
 
 namespace mlir {
 
@@ -24,7 +24,16 @@ namespace mlir {
 
 namespace OpTrait {
 namespace standalone {
-        
+
+template <typename ConcreteType>
+class StandaloneOperatorTrait
+    : public TraitBase<ConcreteType, StandaloneOperatorTrait> {
+    static LogicalResult verifyTrait(Operation *op) {
+        llvm::outs() << "StandaloneOperatorTrait::verifyTrait, op name:" << op->getName() << "\n";
+        return success();    
+    }
+};
+
 /// This class indicates that an op is tosa-elementwise (permits broadcasting,
 /// unlike Elementwise trait).
 template <typename ConcreteType>

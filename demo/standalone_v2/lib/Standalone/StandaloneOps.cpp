@@ -80,6 +80,26 @@ LogicalResult mlir::OpTrait::standalone::verifyStandaloneShapeOperator(Operation
 }
 
 //===----------------------------------------------------------------------===//
+// Tosa dialect initialization.
+//===----------------------------------------------------------------------===//
+
+// TODO
+Operation *standalone::StandaloneDialect::materializeConstant(OpBuilder &builder, Attribute value,
+  Type type, Location loc) {
+  // Tosa dialect constants only support ElementsAttr unlike standard dialect
+  // constant which supports all attributes.
+  // if (llvm::isa<shapeType>(type) && llvm::isa<DenseIntElementsAttr>(value)) {
+  //   return tosa::ConstShapeOp::create(builder, loc, type,
+  //     llvm::cast<DenseIntElementsAttr>(value));
+  // }
+  if (llvm::isa<ElementsAttr>(value))
+    return standalone::ConstOp::create(builder, loc, type,
+        llvm::cast<ElementsAttr>(value));
+  return nullptr;
+}
+
+
+//===----------------------------------------------------------------------===//
 // TOSA Operator Return Type Inference.
 //===----------------------------------------------------------------------===//
 
@@ -151,4 +171,115 @@ LogicalResult standalone::AddOp::inferReturnTypeComponents(                     
     OpaqueProperties properties, RegionRange regions,                        \
     SmallVectorImpl<ShapedTypeComponents> &inferredReturnShapes) {           \
   return NAryInferReturnTypes(operands, inferredReturnShapes);               \
+}
+
+
+//===----------------------------------------------------------------------===//
+// Operator Folders.
+//===----------------------------------------------------------------------===//
+
+
+template <typename IntFolder, typename FloatFolder>
+DenseElementsAttr binaryFolder(DenseElementsAttr lhs, DenseElementsAttr rhs,
+                               RankedTensorType returnTy) {
+  if (rhs && lhs && rhs.isSplat() && lhs.isSplat()) {
+    auto lETy = llvm::cast<ShapedType>(lhs.getType()).getElementType();
+    auto rETy = llvm::cast<ShapedType>(rhs.getType()).getElementType();
+    if (lETy != rETy)
+      return {};
+
+    if (llvm::isa<IntegerType>(lETy)) {
+      APInt l = lhs.getSplatValue<APInt>();
+      APInt r = rhs.getSplatValue<APInt>();
+      auto result = IntFolder()(l, r);
+      return DenseElementsAttr::get(returnTy, result);
+    }
+
+    if (llvm::isa<FloatType>(lETy)) {
+      APFloat l = lhs.getSplatValue<APFloat>();
+      APFloat r = rhs.getSplatValue<APFloat>();
+      auto result = FloatFolder()(l, r);
+      return DenseElementsAttr::get(returnTy, result);
+    }
+  }
+
+  return {};
+}
+
+static bool isSplatZero(Type elemType, DenseElementsAttr val) {
+  if (llvm::isa<FloatType>(elemType))
+    return val && val.isSplat() && val.getSplatValue<APFloat>().isZero();
+  if (llvm::isa<IntegerType>(elemType))
+    return val && val.isSplat() && val.getSplatValue<APInt>().isZero();
+  return false;
+}
+
+static bool isSplatOne(Type elemType, DenseElementsAttr val, int64_t shift) {
+  if (llvm::isa<FloatType>(elemType))
+    return val && val.isSplat() &&
+           val.getSplatValue<APFloat>().isExactlyValue(1.0);
+  if (llvm::isa<IntegerType>(elemType)) {
+    const int64_t shifted = 1LL << shift;
+    return val && val.isSplat() &&
+           val.getSplatValue<APInt>().getSExtValue() == shifted;
+  }
+  return false;
+}
+
+
+
+OpFoldResult standalone::AddOp::fold(FoldAdaptor adaptor) {
+  auto lhsTy = llvm::dyn_cast<RankedTensorType>(getInput1().getType());
+  auto rhsTy = llvm::dyn_cast<RankedTensorType>(getInput2().getType());
+  auto resultTy = llvm::dyn_cast<RankedTensorType>(getType());
+  if (!lhsTy || !rhsTy || !resultTy)
+      return {};
+
+  // Cannot create an ElementsAttr from non-int/float/index types
+  if (!lhsTy.getElementType().isIntOrIndexOrFloat() ||
+      !rhsTy.getElementType().isIntOrIndexOrFloat())
+      return {};
+
+  auto resultETy = resultTy.getElementType();
+  auto lhsAttr =
+      llvm::dyn_cast_if_present<DenseElementsAttr>(adaptor.getInput1());
+  auto rhsAttr =
+      llvm::dyn_cast_if_present<DenseElementsAttr>(adaptor.getInput2());
+
+  if (lhsTy == resultTy && isSplatZero(resultETy, rhsAttr))
+      return getInput1();
+  if (rhsTy == resultTy && isSplatZero(resultETy, lhsAttr))
+      return getInput2();
+
+  if (!lhsAttr || !rhsAttr)
+      return {};
+
+  return binaryFolder<std::plus<APInt>, std::plus<APFloat>>(lhsAttr, rhsAttr,
+                                                              resultTy);
+}
+
+OpFoldResult standalone::ConstOp::fold(FoldAdaptor adaptor) { return getValuesAttr(); }
+
+LogicalResult standalone::ConstOp::verify() {
+
+  auto attrType = llvm::dyn_cast<TensorType>(getValuesAttr().getType());
+  auto outputType = llvm::dyn_cast<TensorType>(getOutput().getType());
+
+  if (!attrType || !outputType) {
+    emitOpError("expected tensors for attr/result type");
+    return failure();
+  }
+
+  // if (auto result = llvm::dyn_cast<mlir::quant::QuantizedType>(
+  //         outputType.getElementType())) {
+  //   if (result.getStorageType() == attrType.getElementType())
+  //     return success();
+  // }
+
+  if (attrType.getElementType() != outputType.getElementType()) {
+    emitOpError("expected same attr/result element types");
+    return failure();
+  }
+
+  return success();
 }
