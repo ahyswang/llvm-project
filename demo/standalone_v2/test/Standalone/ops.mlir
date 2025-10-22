@@ -8,3 +8,9 @@ func.func @test_op_add(%arg0: tensor<2x1x3xf32>, %arg1: tensor<2x1x3xf32>) -> te
     return %res : tensor<2x1x3xf32>
 }
 
+// -----
+func.func @test_op_mul(%arg0: tensor<2x1x3xf32>, %arg1: tensor<2x1x3xf32>) -> tensor<2x1x3xf32> {
+    // CHECK: %{{.*}} = "standalone.mul"(%{{.*}}, %{{.*}}) : (tensor<2x1x3xf32>, tensor<2x1x3xf32>) -> tensor<2x1x3xf32>
+    %res = "standalone.mul"(%arg0,%arg0) : (tensor<2x1x3xf32>, tensor<2x1x3xf32>)-> tensor<2x1x3xf32>
+    return %res : tensor<2x1x3xf32>
+}

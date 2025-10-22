@@ -91,6 +91,39 @@ def Standalone_AddOp: Standalone_ElementwiseOp<"add", [
   //let assemblyFormat = "operands attr-dict `:` functional-type(operands, results)";
 }
  
+//===----------------------------------------------------------------------===//
+// Operator: mul
+//===----------------------------------------------------------------------===//
+def Standalone_MulOp : Standalone_Op<"mul", [
+    DeclareOpInterfaceMethods<InferShapedTypeOpInterface,
+                              ["inferReturnTypeComponents"]>,
+    Commutative,
+    Pure]> {
+  let summary = "Multiplication operator.";
+
+  let description = [{
+    Elementwise multiplication (Hadamard product) of input1 and input2.
+    Axis of size 1 will be broadcast, as necessary. Rank of input tensors must
+    match.
+  }];
+
+  let arguments = (ins
+    AnyTensor:$input1,
+    AnyTensor:$input2
+    // Apply right shift on i32_t input data only
+    //Tosa_ScalarInt8Tensor:$shift
+  );
+
+  let results = (outs
+    AnyTensor:$output
+  );
+
+  let hasFolder = 1;
+  let hasVerifier = 1;
+
+  //let assemblyFormat =
+  //    "operands attr-dict `:` functional-type(operands, results)";
+}
 
 //===----------------------------------------------------------------------===//
 // Operator Class: Data Nodes.

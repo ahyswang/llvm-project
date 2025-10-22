@@ -108,4 +108,24 @@ class Standalone_ElementwiseOp<string mnemonic, list<Trait> traits = []> :
               StandaloneElementwiseOperator
               ])> {}
 
+class Standalone_ElementwiseUnaryOp<string mnemonic, list<Trait> traits = []> :
+    Standalone_ElementwiseOp<mnemonic, !listconcat(traits, [
+              SameOperandsAndResultShape,
+              SameOperandsAndResultElementType])> {}
+
+class Standalone_InferTensorTypeOp<string mnemonic, list<Trait> traits = []>
+    : Standalone_Op<mnemonic, !listconcat(traits, [InferTensorTypeAdaptor, Pure])> {}
+
+class Standalone_InferShapedTypeOp<string mnemonic, list<Trait> traits = []>
+    : Standalone_Op<mnemonic, !listconcat(traits, [InferShapedTypeOpAdaptor, Pure])> {}
+
+// The "SameVariadicOperandSize" trait allows us to pass optional arguments
+// for multiple zero points in convolution ops.
+class Standalone_ConvOp<string mnemonic, list<Trait> traits = []>
+    : Standalone_InferShapedTypeOp<mnemonic, !listconcat(traits,
+      [SameVariadicOperandSize])> {
+  let assemblyFormat =
+      "operands attr-dict `:` functional-type(operands, results)";
+}
+
 #endif // STANDALONE_DIALECT
