@@ -9,9 +9,7 @@
 #include "mlir/Dialect/Quant/IR/Quant.h"
 #include "mlir/Dialect/Quant/IR/QuantTypes.h"
 
-#include "Standalone/IR/StandaloneOps.h"
-#include "Standalone/IR/StandaloneDialect.h"
-#include "Standalone/IR/StandaloneTypes.h"
+#include "Standalone/IR/Standalone.h"
 
 #define GET_OP_CLASSES
 #include "Standalone/IR/StandaloneOps.cpp.inc"

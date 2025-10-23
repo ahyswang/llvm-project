@@ -16,7 +16,7 @@
 #include "mlir/Support/FileUtilities.h"
 #include "mlir/Tools/mlir-opt/MlirOptMain.h"
 
-#include "Standalone/IR/StandaloneDialect.h"
+#include "Standalone/IR/Standalone.h"
 #include "Standalone/Transforms/StandalonePasses.h"
 
 int main(int argc, char **argv) {

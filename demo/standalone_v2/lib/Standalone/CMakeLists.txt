@@ -12,6 +12,7 @@ add_mlir_dialect_library(MLIRStandalone
         MLIRStandaloneOpsIncGen
         MLIRStandalonePassesIncGen
         StandaloneInterfacesIncGen
+        MLIRStandaloneEnumsIncGen
 
         LINK_LIBS PUBLIC
         MLIRIR

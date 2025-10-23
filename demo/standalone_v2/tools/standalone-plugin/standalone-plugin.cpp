@@ -10,7 +10,7 @@
 #include "mlir/InitAllDialects.h"
 #include "mlir/Tools/Plugins/DialectPlugin.h"
 
-#include "Standalone/IR/StandaloneDialect.h"
+#include "Standalone/IR/Standalone.h"
 #include "Standalone/Transforms/StandalonePasses.h"
 #include "mlir/Tools/Plugins/PassPlugin.h"
 #include "llvm/Config/llvm-config.h"

@@ -9,9 +9,7 @@
 #include "mlir/Dialect/Tensor/IR/Tensor.h"
 #include "mlir/Dialect/Quant/IR/Quant.h"
 
-#include "Standalone/IR/StandaloneDialect.h"
-#include "Standalone/IR/StandaloneOps.h"
-#include "Standalone/IR/StandaloneTypes.h"
+#include "Standalone/IR/Standalone.h"
 
 using namespace mlir;
 using namespace mlir::standalone;

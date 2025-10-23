@@ -6,9 +6,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "Standalone/IR/StandaloneTypes.h"
+#include "Standalone/IR/Standalone.h"
 
-#include "Standalone/IR/StandaloneDialect.h"
 #include "mlir/IR/Builders.h"
 #include "mlir/IR/DialectImplementation.h"
 #include "llvm/ADT/TypeSwitch.h"

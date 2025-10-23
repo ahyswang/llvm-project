@@ -17,6 +17,8 @@ include "mlir/Interfaces/SideEffectInterfaces.td"
 include "mlir/Interfaces/InferTypeOpInterface.td"
 include "mlir/Interfaces/LoopLikeInterface.td"
 
+//include "Standalone/IR/StandaloneInterfaces.td"
+
 //===----------------------------------------------------------------------===//
 // Standalone dialect definition.
 //===----------------------------------------------------------------------===//
@@ -119,7 +121,7 @@ def StandaloneElementwiseOperator : NativeOpTrait<"StandaloneElementwiseOperator
 //===----------------------------------------------------------------------===//
 
 class Standalone_Op<string mnemonic, list<Trait> traits = []> :
-        Op<Standalone_Dialect, mnemonic, traits>;
+        Op<Standalone_Dialect, mnemonic, !listconcat(traits, [StandaloneOpInterface])>;
 
 class Standalone_ElementwiseOp<string mnemonic, list<Trait> traits = []> :
     Standalone_Op<mnemonic, !listconcat(traits, [
