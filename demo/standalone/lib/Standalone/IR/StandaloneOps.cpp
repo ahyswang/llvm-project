@@ -11,103 +11,12 @@
 
 #include "Standalone/IR/Standalone.h"
 
-#define GET_OP_CLASSES
-#include "Standalone/IR/StandaloneOps.cpp.inc"
-
 using namespace mlir;
 using namespace mlir::standalone;
-
-
-void StandaloneDialect::registerOps() {
-  addOperations<
-#define GET_OP_LIST
-#include "Standalone/IR/StandaloneOps.cpp.inc"
-      >();
-}
 
 //===----------------------------------------------------------------------===//
 // TOSA Shape and Shape Operators Helper functions.
 //===----------------------------------------------------------------------===//
-
-//===----------------------------------------------------------------------===//
-// Standalone operation validation includes.
-//===----------------------------------------------------------------------===//
-
-namespace mlir {
-
-    namespace OpTrait {
-    namespace standalone {
-    
-    LogicalResult verifyStandaloneResolvableShapeOperands(Operation *op);
-    /// This class verifies that tosa shape operands are compile time resolvable
-    template <typename ConcreteType>
-    class StandaloneResolvableShapeOperands
-        : public TraitBase<ConcreteType, StandaloneResolvableShapeOperands> {
-    public:
-        static LogicalResult verifyTrait(Operation *op) {
-            return verifyStandaloneResolvableShapeOperands(op);
-        }
-    };
-    
-    LogicalResult verifyStandaloneShapeOperator(Operation *op);
-    /// This class indicates that op operates on tosa shape types
-    template <typename ConcreteType>
-    class StandaloneShapeOperator : public TraitBase<ConcreteType, StandaloneShapeOperator> {
-    public:
-      static LogicalResult verifyTrait(Operation *op) {
-        return verifyStandaloneShapeOperator(op);
-      }
-    };
-    
-} // namespace Standalone
-} // namespace OpTrait
-} // namespace mlir
-
-LogicalResult mlir::OpTrait::standalone::verifyStandaloneResolvableShapeOperands(Operation *op) {
-    for (auto v : op->getOperands()) {
-        if (mlir::isa<::mlir::standalone::shapeType>(v.getType())) {
-            Operation *definingOp = v.getDefiningOp();
-            if (!definingOp || !definingOp->hasTrait<StandaloneShapeOperator>()) {
-                return op->emitOpError("shape operand is not compile time resolvable");
-            }
-        }
-    }
-    return success();
-}
-
-LogicalResult mlir::OpTrait::standalone::verifyStandaloneShapeOperator(Operation *op) {
-    for (auto type : op->getOperandTypes()) {
-        if (!mlir::isa<mlir::standalone::shapeType>(type)) {
-            return op->emitOpError("must have operands with standalone shape type");
-        }
-    }
-    for (auto type : op->getResultTypes()) {
-        if (!mlir::isa<mlir::standalone::shapeType>(type)) {
-            return op->emitOpError("must have result with standalone shape type");
-        }
-    }
-    return success();
-}
-
-//===----------------------------------------------------------------------===//
-// Tosa dialect initialization.
-//===----------------------------------------------------------------------===//
-
-// TODO
-Operation *standalone::StandaloneDialect::materializeConstant(OpBuilder &builder, Attribute value,
-  Type type, Location loc) {
-  // Tosa dialect constants only support ElementsAttr unlike standard dialect
-  // constant which supports all attributes.
-  // if (llvm::isa<shapeType>(type) && llvm::isa<DenseIntElementsAttr>(value)) {
-  //   return tosa::ConstShapeOp::create(builder, loc, type,
-  //     llvm::cast<DenseIntElementsAttr>(value));
-  // }
-  if (llvm::isa<ElementsAttr>(value))
-    return standalone::ConstOp::create(builder, loc, type,
-        llvm::cast<ElementsAttr>(value));
-  return nullptr;
-}
-
 
 //===----------------------------------------------------------------------===//
 // TOSA Operator Return Type Inference.

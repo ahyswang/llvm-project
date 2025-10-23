@@ -35,11 +35,6 @@ def Standalone_Dialect : Dialect {
     let dependentDialects = ["tensor::TensorDialect", "quant::QuantDialect"];
 
     let useDefaultTypePrinterParser = 1;
-    let extraClassDeclaration = [{
-    void registerTypes(); 
-    void registerOps(); 
-    }];
-
     let hasConstantMaterializer = 1; 
 }
 
@@ -98,22 +93,22 @@ def StandaloneOpInterface : OpInterface<"StandaloneOp"> {
 //===----------------------------------------------------------------------===//
 // Op operands with Standalone shape types must be compile time resolvable
 def StandaloneResolvableShapeOperands : NativeOpTrait<"StandaloneResolvableShapeOperands"> {
-  let cppNamespace = "mlir::OpTrait::standalone";
+  let cppNamespace = "mlir::standalone";
 }
 
 // Op trait: operator has operands and results with Standalone shape type
 def StandaloneShapeOperator : NativeOpTrait<"StandaloneShapeOperator"> {
-  let cppNamespace = "mlir::OpTrait::standalone";
+  let cppNamespace = "mlir::standalone";
 }
 
 // Permits broadcasting. Elementwise trait is too strict.
 def StandaloneOperatorTrait : NativeOpTrait<"StandaloneOperatorTrait"> {
-  let cppNamespace = "mlir::OpTrait::standalone";
+  let cppNamespace = "mlir::standalone";
 }
 
 // Permits broadcasting. Elementwise trait is too strict.
 def StandaloneElementwiseOperator : NativeOpTrait<"StandaloneElementwiseOperator"> {
-  let cppNamespace = "mlir::OpTrait::standalone";
+  let cppNamespace = "mlir::standalone";
 }
 
 //===----------------------------------------------------------------------===//
