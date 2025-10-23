@@ -6,9 +6,9 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "Standalone/StandaloneTypes.h"
+#include "Standalone/IR/StandaloneTypes.h"
 
-#include "Standalone/StandaloneDialect.h"
+#include "Standalone/IR/StandaloneDialect.h"
 #include "mlir/IR/Builders.h"
 #include "mlir/IR/DialectImplementation.h"
 #include "llvm/ADT/TypeSwitch.h"
@@ -18,12 +18,12 @@ using namespace llvm;
 using namespace mlir::standalone;
 
 #define GET_TYPEDEF_CLASSES
-#include "Standalone/StandaloneOpsTypes.cpp.inc"
+#include "Standalone/IR/StandaloneOpsTypes.cpp.inc"
 
 void StandaloneDialect::registerTypes() {
   addTypes<
 #define GET_TYPEDEF_LIST
-#include "Standalone/StandaloneOpsTypes.cpp.inc"
+#include "Standalone/IR/StandaloneOpsTypes.cpp.inc"
       >();
 }
 

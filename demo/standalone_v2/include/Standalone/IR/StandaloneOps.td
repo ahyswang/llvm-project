@@ -16,8 +16,8 @@ include "mlir/Interfaces/SideEffectInterfaces.td"
 include "mlir/Interfaces/LoopLikeInterface.td"
 include "mlir/Bytecode/BytecodeOpInterface.td"
 
-include "Standalone/StandaloneTypes.td"
-include "Standalone/StandaloneDialect.td"
+include "Standalone/IR/StandaloneTypes.td"
+include "Standalone/IR/StandaloneDialect.td"
 
 
 def Standalone_FooOp : Standalone_Op<"foo", [Pure,

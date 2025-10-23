@@ -1,9 +1,9 @@
 add_mlir_dialect_library(MLIRStandalone
-        StandaloneTypes.cpp
-        StandaloneDialect.cpp
-        StandaloneOps.cpp
-        StandalonePasses.cpp
-        StandaloneInferShapes.cpp
+        IR/StandaloneTypes.cpp
+        IR/StandaloneDialect.cpp
+        IR/StandaloneOps.cpp
+        Transforms/StandalonePasses.cpp
+        Transforms/StandaloneInferShapes.cpp
 
         ADDITIONAL_HEADER_DIRS
         ${PROJECT_SOURCE_DIR}/include/Standalone

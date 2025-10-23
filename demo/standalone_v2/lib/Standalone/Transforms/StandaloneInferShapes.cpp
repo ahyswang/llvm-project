@@ -20,13 +20,13 @@
 #include "mlir/Interfaces/InferTypeOpInterface.h"
 #include "mlir/Transforms/DialectConversion.h"
 
-#include "Standalone/StandalonePasses.h"
-#include "Standalone/ShapeUtils.h"
+#include "Standalone/Transforms/StandalonePasses.h"
+#include "Standalone/Utils/ShapeUtils.h"
 
 namespace mlir {
 namespace standalone {
 #define GEN_PASS_DEF_STANDALONEINFERSHAPESPASS
-#include "Standalone/StandalonePasses.h.inc"
+#include "Standalone/Transforms/StandalonePasses.h.inc"
 } // namespace standalone
 } // namespace mlir
 

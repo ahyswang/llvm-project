@@ -9,23 +9,20 @@
 #include "mlir/Dialect/Tensor/IR/Tensor.h"
 #include "mlir/Dialect/Quant/IR/Quant.h"
 
-#include "Standalone/StandaloneDialect.h"
-#include "Standalone/StandaloneOps.h"
-#include "Standalone/StandaloneTypes.h"
+#include "Standalone/IR/StandaloneDialect.h"
+#include "Standalone/IR/StandaloneOps.h"
+#include "Standalone/IR/StandaloneTypes.h"
 
 using namespace mlir;
 using namespace mlir::standalone;
 
-#include "Standalone/StandaloneOpsDialect.cpp.inc"
+#include "Standalone/IR/StandaloneOpsDialect.cpp.inc"
 
 //===----------------------------------------------------------------------===//
 // Standalone dialect.
 //===----------------------------------------------------------------------===//
 
 void StandaloneDialect::initialize() {
-  addOperations<
-#define GET_OP_LIST
-#include "Standalone/StandaloneOps.cpp.inc"
-      >();
+  registerOps();
   registerTypes();
 }

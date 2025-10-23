@@ -34,7 +34,8 @@ def Standalone_Dialect : Dialect {
 
     let useDefaultTypePrinterParser = 1;
     let extraClassDeclaration = [{
-    void registerTypes();
+    void registerTypes(); 
+    void registerOps(); 
     }];
 
     let hasConstantMaterializer = 1; 

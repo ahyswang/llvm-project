@@ -16,7 +16,7 @@
 include "mlir/IR/AttrTypeBase.td"
 include "mlir/IR/OpBase.td"
 
-include "Standalone/StandaloneDialect.td"
+include "Standalone/IR/StandaloneDialect.td"
 
 //===----------------------------------------------------------------------===//
 // Standalone Type Definitions.

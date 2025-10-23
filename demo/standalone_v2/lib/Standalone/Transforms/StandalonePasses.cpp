@@ -10,11 +10,11 @@
 #include "mlir/Rewrite/FrozenRewritePatternSet.h"
 #include "mlir/Transforms/GreedyPatternRewriteDriver.h"
 
-#include "Standalone/StandalonePasses.h"
+#include "Standalone/Transforms/StandalonePasses.h"
 
 namespace mlir::standalone {
 #define GEN_PASS_DEF_STANDALONESWITCHBARFOO
-#include "Standalone/StandalonePasses.h.inc"
+#include "Standalone/Transforms/StandalonePasses.h.inc"
 
 namespace {
 class StandaloneSwitchBarFooRewriter : public OpRewritePattern<func::FuncOp> {

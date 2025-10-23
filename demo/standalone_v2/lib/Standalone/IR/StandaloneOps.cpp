@@ -9,14 +9,23 @@
 #include "mlir/Dialect/Quant/IR/Quant.h"
 #include "mlir/Dialect/Quant/IR/QuantTypes.h"
 
-#include "Standalone/StandaloneOps.h"
-#include "Standalone/StandaloneDialect.h"
-#include "Standalone/StandaloneTypes.h"
+#include "Standalone/IR/StandaloneOps.h"
+#include "Standalone/IR/StandaloneDialect.h"
+#include "Standalone/IR/StandaloneTypes.h"
 
 #define GET_OP_CLASSES
-#include "Standalone/StandaloneOps.cpp.inc"
+#include "Standalone/IR/StandaloneOps.cpp.inc"
 
 using namespace mlir;
+using namespace mlir::standalone;
+
+
+void StandaloneDialect::registerOps() {
+  addOperations<
+#define GET_OP_LIST
+#include "Standalone/IR/StandaloneOps.cpp.inc"
+      >();
+}
 
 //===----------------------------------------------------------------------===//
 // TOSA Shape and Shape Operators Helper functions.

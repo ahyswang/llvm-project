@@ -1,0 +1,5 @@
+add_subdirectory(standalone-opt)
+if(NOT WIN32)
+  add_subdirectory(standalone-plugin)
+endif()
+add_subdirectory(standalone-translate)
