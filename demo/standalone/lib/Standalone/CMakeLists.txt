@@ -1,10 +1,9 @@
 add_mlir_dialect_library(MLIRStandalone
-        StandaloneTypes.cpp
-        StandaloneDialect.cpp
-        StandaloneOps.cpp
-        StandalonePasses.cpp
-
-        FuseMulAddPass.cpp
+        IR/StandaloneTypes.cpp
+        IR/StandaloneDialect.cpp
+        IR/StandaloneOps.cpp
+        Transforms/StandalonePasses.cpp
+        Transforms/StandaloneInferShapes.cpp
 
         ADDITIONAL_HEADER_DIRS
         ${PROJECT_SOURCE_DIR}/include/Standalone
@@ -12,6 +11,8 @@ add_mlir_dialect_library(MLIRStandalone
         DEPENDS
         MLIRStandaloneOpsIncGen
         MLIRStandalonePassesIncGen
+        StandaloneInterfacesIncGen
+        MLIRStandaloneEnumsIncGen
 
         LINK_LIBS PUBLIC
         MLIRIR
