@@ -108,14 +108,14 @@ def Standalone_MulOp : Standalone_Op<"mul", [
   }];
 
   let arguments = (ins
-    AnyTensor:$input1,
-    AnyTensor:$input2
+    Standalone_Tensor:$input1,
+    Standalone_Tensor:$input2
     // Apply right shift on i32_t input data only
-    //Tosa_ScalarInt8Tensor:$shift
+    //Standalone_ScalarInt8Tensor:$shift
   );
 
   let results = (outs
-    AnyTensor:$output
+    Standalone_Tensor:$output
   );
 
   let hasFolder = 1;
@@ -161,5 +161,42 @@ def Standalone_ConstOp : Standalone_Op<"const", [ConstantLike, Pure,
   let hasFolder = 1;
   let hasVerifier = 1;
 }
+
+//===----------------------------------------------------------------------===//
+// Operator: conv2d
+//===----------------------------------------------------------------------===//
+def Standalone_Conv2DOp : Standalone_ConvOp<"conv2d"> {
+  let summary = "2D Convolution operator.";
+
+  let description = [{
+    Performs a 2D convolution over the given tensor input, using the weight
+    tensor. Implementations may choose to skip calculation of multiplies in
+    the padding area.
+  }];
+
+  let arguments = (ins
+    Standalone_Tensor4D:$input,
+    Standalone_Tensor4D:$weight,
+    Standalone_Tensor1D:$bias,
+    Standalone_ScalarIntOrFloatTensor:$input_zp,
+    Standalone_ScalarIntOrFloatTensor:$weight_zp,
+
+    Standalone_IntArrayAttr4:$pad,
+    Standalone_IntArrayAttr2:$stride,
+    Standalone_IntArrayAttr2:$dilation,
+    //TypeAttrOf<Standalone_AccType>:$acc_type,
+    DefaultValuedOptionalAttr<BoolAttr, "false">:$local_bound
+  );
+
+  let results = (outs
+    Standalone_Tensor4D:$output
+  );
+
+  //let builders = [Standalone_ConvOpQuantInfoBuilder];
+
+  //let hasCanonicalizer = 1;
+  //let hasVerifier = 1;
+}
+
 
 #endif // STANDALONE_OPS
