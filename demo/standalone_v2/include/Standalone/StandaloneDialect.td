@@ -30,22 +30,65 @@ def Standalone_Dialect : Dialect {
         working inside of the LLVM source tree.
     }];
     let cppNamespace = "::mlir::standalone";
+    let dependentDialects = ["tensor::TensorDialect", "quant::QuantDialect"];
 
     let useDefaultTypePrinterParser = 1;
     let extraClassDeclaration = [{
-        void registerTypes();
+    void registerTypes();
     }];
 
     let hasConstantMaterializer = 1; 
 }
 
 //===----------------------------------------------------------------------===//
-// Base standalone operation definition.
+// Standalone Iterable attributes.
+//===----------------------------------------------------------------------===//
+// Defined in `section 3. Enumerations` of the Standalone specification.
+
+// Wrapper over base I32EnumAttr to set common fields.
+class Standalone_I32Enum<string name, string description, list<I32EnumAttrCase> cases>
+     : I32EnumAttr<name, description, cases> {
+   let genSpecializedAttr = 0;
+   let cppNamespace = "::mlir::standalone";
+}
+
+class Standalone_I32EnumAttr<string name, string description, string mnemonic,
+                         list<I32EnumAttrCase> cases>
+    : EnumAttr<Standalone_Dialect, Standalone_I32Enum<name, description, cases>, mnemonic> {
+   let assemblyFormat = "`<` $value `>`";
+}
+
+def Standalone_RESIZE_NEAREST_NEIGHBOR          : I32EnumAttrCase<"NEAREST_NEIGHBOR", 1>;
+def Standalone_RESIZE_BILINEAR                  : I32EnumAttrCase<"BILINEAR", 2>;
+
+def Standalone_ResizeModeAttr
+    : Standalone_I32EnumAttr<"ResizeMode", "Supported resize/upsampling strategies", "resize_mode",
+                    [Standalone_RESIZE_NEAREST_NEIGHBOR, Standalone_RESIZE_BILINEAR]>;
+
+def Standalone_NANPROPAGATION_PROPAGATE : I32EnumAttrCase<"PROPAGATE", 1>;
+def Standalone_NANPROPAGATION_IGNORE    : I32EnumAttrCase<"IGNORE", 2>;
+
+def Standalone_NanPropagationModeAttr
+    : Standalone_I32EnumAttr<"NanPropagationMode", "Supported NaN propagation strategies", "nan_mode",
+                    [Standalone_NANPROPAGATION_PROPAGATE, Standalone_NANPROPAGATION_IGNORE]>;
+
+def Standalone_ROUNDING_SINGLE_ROUND    : I32EnumAttrCase<"SINGLE_ROUND", 1>;
+def Standalone_ROUNDING_INEXACT_ROUND   : I32EnumAttrCase<"INEXACT_ROUND", 2>;
+def Standalone_ROUNDING_DOUBLE_ROUND    : I32EnumAttrCase<"DOUBLE_ROUND", 3>;
+
+def Standalone_RoundingModeAttr
+    : Standalone_I32EnumAttr<"RoundingMode", "Supported rounding modes", "rounding_mode",
+                    [Standalone_ROUNDING_SINGLE_ROUND, Standalone_ROUNDING_INEXACT_ROUND, Standalone_ROUNDING_DOUBLE_ROUND]>;
+
+//===----------------------------------------------------------------------===//
+// Standalone Interfaces.
 //===----------------------------------------------------------------------===//
 
-class Standalone_Op<string mnemonic, list<Trait> traits = []> :
-        Op<Standalone_Dialect, mnemonic, traits>;
-
+def StandaloneOpInterface : OpInterface<"StandaloneOp"> {
+  let description = [{
+    Implemented by ops that correspond to the Tosa specification.
+  }];
+}
 
 //===----------------------------------------------------------------------===//
 // Standalone Operator Trait.
@@ -60,12 +103,6 @@ def StandaloneShapeOperator : NativeOpTrait<"StandaloneShapeOperator"> {
   let cppNamespace = "mlir::OpTrait::standalone";
 }
 
-def StandaloneOpInterface : OpInterface<"StandaloneOp"> {
-  let description = [{
-    Implemented by ops that correspond to the Tosa specification.
-  }];
-}
-
 // Permits broadcasting. Elementwise trait is too strict.
 def StandaloneOperatorTrait : NativeOpTrait<"StandaloneOperatorTrait"> {
   let cppNamespace = "mlir::OpTrait::standalone";
@@ -77,29 +114,11 @@ def StandaloneElementwiseOperator : NativeOpTrait<"StandaloneElementwiseOperator
 }
 
 //===----------------------------------------------------------------------===//
-// TOSA Operator Class.
+// Standalone Operator Class.
 //===----------------------------------------------------------------------===//
 
-class Standalone_Opv1<string mnemonic, list<Trait> traits = []> :
-    Op<Standalone_Dialect, mnemonic, !listconcat(traits, [
-        StandaloneOpInterface,
-        DeclareOpInterfaceMethods<InferShapedTypeOpInterface,["inferReturnTypeComponents"]>
-        ])> {
-}
-
-
-class Standalone_Opv2<string mnemonic, list<Trait> traits = []> :
-    Op<Standalone_Dialect, mnemonic, !listconcat(traits, [StandaloneOpInterface,
-    StandaloneResolvableShapeOperands])> {
-}
-
-class Standalone_ElementwiseOp1111<string mnemonic, list<Trait> traits = []> :
-    Standalone_Op<mnemonic, !listconcat(traits, [
-              DeclareOpInterfaceMethods<InferShapedTypeOpInterface,["inferReturnTypeComponents"]>,
-              ResultsBroadcastableShape,
-              StandaloneElementwiseOperator,
-              SameOperandsAndResultRank,
-              Pure])> {}
+class Standalone_Op<string mnemonic, list<Trait> traits = []> :
+        Op<Standalone_Dialect, mnemonic, traits>;
 
 class Standalone_ElementwiseOp<string mnemonic, list<Trait> traits = []> :
     Standalone_Op<mnemonic, !listconcat(traits, [
