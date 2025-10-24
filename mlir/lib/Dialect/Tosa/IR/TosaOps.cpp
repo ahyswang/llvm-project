@@ -2662,7 +2662,7 @@ LogicalResult TransposeOp::reifyResultShapes(
       returnedDims[dim] =
           builder.getIndexAttr(inputType.getDimSize(dimInInput));
   }
-
+ 
   reifiedReturnShapes.emplace_back(std::move(returnedDims));
   return success();
 }

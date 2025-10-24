@@ -70,6 +70,287 @@ def Standalone_ClampOp : Standalone_ElementwiseUnaryOp<"clamp"> {
 
 
 //===----------------------------------------------------------------------===//
+// Operator: bitwise_and
+//===----------------------------------------------------------------------===//
+def Standalone_BitwiseAndOp : Standalone_ElementwiseOp<"bitwise_and", [
+    Commutative,
+    SameOperandsAndResultElementType]> {
+  let summary = "Bitwise AND operator.";
+
+  let description = [{
+    Elementwise bitwise AND of input1 and input2. Axis of size 1
+    will be broadcast as necessary. Rank of input tensors must match.
+
+    precision supported:
+    |Input    |Ouput    |
+    |---------|---------| 
+    | bit8    | bit8    |
+    | bit16   | bit16   |
+    | bit32   | bit32   |
+  }];
+
+  let arguments = (ins
+    Standalone_Tensor:$input1,
+    Standalone_Tensor:$input2
+  );
+
+  let results = (outs
+    Standalone_Tensor:$output
+  );
+
+  let assemblyFormat = "operands attr-dict `:` functional-type(operands, results)";
+}
+
+//===----------------------------------------------------------------------===//
+// Operator: bitwise_or
+//===----------------------------------------------------------------------===//
+def Standalone_BitwiseOrOp : Standalone_ElementwiseOp<"bitwise_or", [
+    Commutative,
+    SameOperandsAndResultElementType]> {
+  let summary = "Bitwise OR operator.";
+
+  let description = [{
+    Elementwise bitwise OR of input1 and input2. Axis of size 1 will be
+    broadcast as necessary. Rank of input tensors must match.
+  }];
+
+  let arguments = (ins
+    Standalone_Tensor:$input1,
+    Standalone_Tensor:$input2
+  );
+
+  let results = (outs
+    Standalone_Tensor:$output
+  );
+
+  let assemblyFormat = "operands attr-dict `:` functional-type(operands, results)";
+}
+
+//===----------------------------------------------------------------------===//
+// Operator: bitwise_xor
+//===----------------------------------------------------------------------===//
+def Standalone_BitwiseXorOp : Standalone_ElementwiseOp<"bitwise_xor", [
+    Commutative,
+    SameOperandsAndResultElementType]> {
+  let summary = "Bitwise XOR operator.";
+
+  let description = [{
+    Elementwise bitwise XOR of input1 and input2. Axis of size 1 will be
+    broadcast as necessary. Rank of input tensors must match.
+  }];
+
+  let arguments = (ins
+    Standalone_Tensor:$input1,
+    Standalone_Tensor:$input2
+  );
+
+  let results = (outs
+    Standalone_Tensor:$output
+  );
+
+  let assemblyFormat = "operands attr-dict `:` functional-type(operands, results)";
+}
+
+//===----------------------------------------------------------------------===//
+// Operator: bitwise_not
+//===----------------------------------------------------------------------===//
+def Standalone_BitwiseNotOp : Standalone_ElementwiseOp<"bitwise_not", [
+    Commutative,
+    SameOperandsAndResultElementType]> {
+  let summary = "Bitwise NOT operator.";
+
+  let description = [{
+    Elementwise bitwise NOT of input1. 
+  }];
+
+  let arguments = (ins
+    Standalone_Tensor:$input1
+  );
+
+  let results = (outs
+    Standalone_Tensor:$output
+  );
+
+  let assemblyFormat = "operands attr-dict `:` functional-type(operands, results)";
+}
+
+//===----------------------------------------------------------------------===//
+// Operator: left_shift
+//===----------------------------------------------------------------------===//
+def Standalone_LeftshiftOp : Standalone_ElementwiseOp<"left_shift", [
+    Commutative,
+    SameOperandsAndResultElementType]> {
+  let summary = "Bitwise left shift operator.";
+
+  let description = [{
+    Elementwise bitwise left-shift of input1 and input2. Axis of size 1 will be
+    broadcast as necessary. Rank of input tensors must match.
+  }];
+
+  let arguments = (ins
+    Standalone_Tensor:$input1,
+    Standalone_Tensor:$input2
+  );
+
+  let results = (outs
+    Standalone_Tensor:$output
+  );
+
+  let assemblyFormat = "operands attr-dict `:` functional-type(operands, results)";
+}
+
+//===----------------------------------------------------------------------===//
+// Operator: right_shift   TODO:yswang
+//===----------------------------------------------------------------------===//
+def Standalone_RightshiftOp : Standalone_ElementwiseOp<"right_shift", [
+    Commutative,
+    SameOperandsAndResultElementType]> {
+  let summary = "Bitwise right shift operator.";
+
+  let description = [{
+    Elementwise bitwise right-shift of input1 and input2. Axis of size 1 will be
+    broadcast as necessary. Rank of input tensors must match.
+  }];
+
+  let arguments = (ins
+    Standalone_Tensor:$input1,
+    Standalone_Tensor:$input2
+  );
+
+  let results = (outs
+    Standalone_Tensor:$output
+  );
+
+  let assemblyFormat = "operands attr-dict `:` functional-type(operands, results)";
+}
+
+//===----------------------------------------------------------------------===//
+// Operator: negative
+//===----------------------------------------------------------------------===//
+def Standalone_NegativeOp : Standalone_ElementwiseOp<"negative", [
+    StandaloneElementwiseOperator,
+    Pure]> {
+  let summary = "Elementwise negative operator.";
+
+  let description = [{
+    Elementwise negative operation.
+
+    precision supported:
+    |Input    |Ouput    |
+    |---------|---------| 
+    | bit8    | bit8    |
+    | bit16   | bit16   |
+    | bit32   | bit32   |
+    | fp16    | fp16   |
+    | fp32    | fp32   |
+
+  }];
+
+  let arguments = (ins
+      Standalone_Tensor:$input1
+  );
+
+  let results = (outs
+    Standalone_Tensor:$output
+  );
+
+  //let builders = [Standalone_NegateOpQuantInfoBuilder];
+
+  //let hasFolder = 1;
+  //let hasVerifier = 1;
+
+  let assemblyFormat =
+      "operands attr-dict `:` functional-type(operands, results)";
+}
+
+//===----------------------------------------------------------------------===//
+// Operator: quant TODO:yswang
+//===----------------------------------------------------------------------===//
+def Standalone_QuantOp : Standalone_ElementwiseOp<"quant", [
+    StandaloneElementwiseOperator,
+    Pure]> {
+  let summary = "Elementwise quant operator.";
+
+  let description = [{
+    Elementwise quant operation.
+
+    precision supported:
+
+    |Input    |Ouput    |
+    |---------|---------| 
+    | fp16    | int8    |
+    | fp16    | int16   |
+    | fp32    | int8    |
+    | fp32    | int16   |
+
+  }];
+
+  let arguments = (ins
+      Standalone_Tensor:$input1,
+      Standalone_ScalarIntOrFloatTensor:$input_zp,
+      Standalone_ScalarIntOrFloatTensor:$input_scale,
+      DenseI64ArrayAttr:$axis,
+      DenseI64ArrayAttr:$block_size
+  );
+
+  let results = (outs
+    Standalone_Tensor:$output
+  );
+
+  //let builders = [Standalone_NegateOpQuantInfoBuilder];
+
+  //let hasFolder = 1;
+  //let hasVerifier = 1;
+
+  let assemblyFormat =
+      "operands attr-dict `:` functional-type(operands, results)";
+}
+
+//===----------------------------------------------------------------------===//
+// Operator: dequant TODO:yswang
+//===----------------------------------------------------------------------===//
+def Standalone_DequantOp : Standalone_ElementwiseOp<"dequant", [
+    StandaloneElementwiseOperator,
+    Pure]> {
+  let summary = "Elementwise dequant operator.";
+
+  let description = [{
+    Elementwise dequant operation.
+
+    precision supported:
+
+    |Input    |Ouput    |
+    |---------|---------| 
+    | int8    | fp16    |
+    | int8    | fp32    |
+    | int16   | fp16    |
+    | int16   | fp32    |
+
+  }];
+
+  let arguments = (ins
+      Standalone_Tensor:$input1,
+      Standalone_ScalarIntOrFloatTensor:$input_zp,
+      Standalone_ScalarIntOrFloatTensor:$input_scale,
+      DenseI64ArrayAttr:$axis,
+      DenseI64ArrayAttr:$block_size
+  );
+
+  let results = (outs
+    Standalone_Tensor:$output
+  );
+
+  //let builders = [Standalone_NegateOpQuantInfoBuilder];
+
+  //let hasFolder = 1;
+  //let hasVerifier = 1;
+
+  let assemblyFormat =
+      "operands attr-dict `:` functional-type(operands, results)";
+}
+
+
+//===----------------------------------------------------------------------===//
 // Operator Class: Reduction Operators.
 //===----------------------------------------------------------------------===//
 
