@@ -6,8 +6,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef STANDALONE_DIALECT
-#define STANDALONE_DIALECT
+#ifndef MLIR_DIALECT_STANDALONE_IR_STANDALONEDIALECT_TD
+#define MLIR_DIALECT_STANDALONE_IR_STANDALONEDIALECT_TD
 
 include "mlir/IR/AttrTypeBase.td"
 include "mlir/IR/EnumAttr.td"
@@ -116,12 +116,11 @@ def StandaloneElementwiseOperator : NativeOpTrait<"StandaloneElementwiseOperator
 //===----------------------------------------------------------------------===//
 
 class Standalone_Op<string mnemonic, list<Trait> traits = []> :
-        Op<Standalone_Dialect, mnemonic, !listconcat(traits, [StandaloneOpInterface])>;
+        Op<Standalone_Dialect, mnemonic, !listconcat(traits, [StandaloneOpInterface, StandaloneOperatorTrait])>;
 
 class Standalone_ElementwiseOp<string mnemonic, list<Trait> traits = []> :
     Standalone_Op<mnemonic, !listconcat(traits, [
               DeclareOpInterfaceMethods<InferShapedTypeOpInterface,["inferReturnTypeComponents"]>,
-              StandaloneOperatorTrait,
               StandaloneElementwiseOperator
               ])> {}
 
@@ -145,4 +144,4 @@ class Standalone_ConvOp<string mnemonic, list<Trait> traits = []>
       "operands attr-dict `:` functional-type(operands, results)";
 }
 
-#endif // STANDALONE_DIALECT
+#endif // MLIR_DIALECT_STANDALONE_IR_STANDALONEDIALECT_TD

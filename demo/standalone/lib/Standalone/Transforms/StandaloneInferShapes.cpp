@@ -17,14 +17,14 @@
 #include "mlir/Interfaces/InferTypeOpInterface.h"
 #include "mlir/Transforms/DialectConversion.h"
 
-#include "Standalone/Transforms/StandalonePasses.h"
+#include "Standalone/Transforms/Passes.h"
 #include "Standalone/IR/Standalone.h"
 #include "Standalone/Utils/ShapeUtils.h"
 
 namespace mlir {
 namespace standalone {
 #define GEN_PASS_DEF_STANDALONEINFERSHAPESPASS
-#include "Standalone/Transforms/StandalonePasses.h.inc"
+#include "Standalone/Transforms/Passes.h.inc"
 } // namespace standalone
 } // namespace mlir
 

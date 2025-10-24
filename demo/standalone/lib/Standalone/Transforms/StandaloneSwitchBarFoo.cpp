@@ -10,7 +10,7 @@
 #include "mlir/Rewrite/FrozenRewritePatternSet.h"
 #include "mlir/Transforms/GreedyPatternRewriteDriver.h"
 
-#include "Standalone/Transforms/StandalonePasses.h"
+#include "Standalone/Transforms/Passes.h"
 
 namespace mlir::standalone {
 #define GEN_PASS_DEF_STANDALONESWITCHBARFOO
@@ -41,6 +41,23 @@ public:
     FrozenRewritePatternSet patternSet(std::move(patterns));
     if (failed(applyPatternsGreedily(getOperation(), patternSet)))
       signalPassFailure();
+
+    ModuleOp module = getOperation();
+
+    for (auto func: module.getOps<func::FuncOp>()) {
+      llvm::outs() << "Found FuncOp: " << func.getName() << "\n";
+      for (auto &block : func.getBody()) {
+        for(auto &op: block) {
+          if (auto interfaceOp = dyn_cast<StandaloneOp>(op)) {
+            llvm::outs() << "Found StandaloneOpInterface in op: " << op.getName() << "\n";
+          }
+          if (op.hasTrait<standalone::StandaloneOperatorTrait>()) {
+            llvm::outs() << "Found standalone operator trait in op: " << op.getName() << "\n";
+          }
+        }
+      }
+    }
+    
   }
 };
 } // namespace

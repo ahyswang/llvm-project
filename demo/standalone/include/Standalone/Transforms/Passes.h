@@ -5,8 +5,8 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 //===----------------------------------------------------------------------===//
-#ifndef STANDALONE_STANDALONEPASSES_H
-#define STANDALONE_STANDALONEPASSES_H
+#ifndef MLIR_DIALECT_STANDALONE_TRANSFORMS_PASSES_TD
+#define MLIR_DIALECT_STANDALONE_TRANSFORMS_PASSES_TD
 
 #include "Standalone/IR/Standalone.h"
 #include "mlir/Pass/Pass.h"
@@ -22,4 +22,4 @@ namespace standalone {
 } // namespace standalone
 } // namespace mlir
 
-#endif
+#endif //MLIR_DIALECT_STANDALONE_TRANSFORMS_PASSES_TD

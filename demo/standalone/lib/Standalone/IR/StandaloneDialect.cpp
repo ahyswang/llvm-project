@@ -18,6 +18,19 @@
 using namespace mlir;
 using namespace mlir::standalone;
 
+//===----------------------------------------------------------------------===//
+// Standalone dialect and structs define.
+//===----------------------------------------------------------------------===//
+
+#include "Standalone/IR/StandaloneOpsDialect.cpp.inc"
+#include "Standalone/IR/StandaloneInterfaces.cpp.inc"
+#include "Standalone/IR/StandaloneEnums.cpp.inc"
+#define GET_ATTRDEF_CLASSES
+#include "Standalone/IR/StandaloneAttributes.cpp.inc"
+#define GET_TYPEDEF_CLASSES
+#include "Standalone/IR/StandaloneOpsTypes.cpp.inc"
+#define GET_OP_CLASSES
+#include "Standalone/IR/StandaloneOps.cpp.inc"
 
 //===----------------------------------------------------------------------===//
 // Standalone dialect.
@@ -95,19 +108,7 @@ LogicalResult verifyStandaloneShapeOperator(Operation *op) {
   return success();
 }
   
-//===----------------------------------------------------------------------===//
-// Standalone dialect and structs define.
-//===----------------------------------------------------------------------===//
 
-#include "Standalone/IR/StandaloneOpsDialect.cpp.inc"
-#include "Standalone/IR/StandaloneInterfaces.cpp.inc"
-#include "Standalone/IR/StandaloneEnums.cpp.inc"
-#define GET_ATTRDEF_CLASSES
-#include "Standalone/IR/StandaloneAttributes.cpp.inc"
-#define GET_TYPEDEF_CLASSES
-#include "Standalone/IR/StandaloneOpsTypes.cpp.inc"
-#define GET_OP_CLASSES
-#include "Standalone/IR/StandaloneOps.cpp.inc"
 
 
 

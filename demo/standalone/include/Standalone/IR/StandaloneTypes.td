@@ -10,8 +10,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef STANDALONE_TYPES_BASE
-#define STANDALONE_TYPES_BASE
+#ifndef MLIR_DIALECT_STANDALONE_IR_STANDALONETYPES_TD
+#define MLIR_DIALECT_STANDALONE_IR_STANDALONETYPES_TD
 
 include "mlir/IR/AttrTypeBase.td"
 include "mlir/IR/OpBase.td"
@@ -316,4 +316,4 @@ def Standalone_CustomType : Standalone_Type<"Custom", "custom"> {
 }
 
 
-#endif // STANDALONE_TYPES_BASE
+#endif // MLIR_DIALECT_STANDALONE_IR_STANDALONETYPES_TD

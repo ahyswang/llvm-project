@@ -6,8 +6,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef STANDALONE_OPS
-#define STANDALONE_OPS
+#ifndef MLIR_DIALECT_STANDALONE_IR_STANDALONEOPS_TD
+#define MLIR_DIALECT_STANDALONE_IR_STANDALONEOPS_TD
 
 include "mlir/IR/OpBase.td"
 
@@ -199,4 +199,4 @@ def Standalone_Conv2DOp : Standalone_ConvOp<"conv2d"> {
 }
 
 
-#endif // STANDALONE_OPS
+#endif // MLIR_DIALECT_STANDALONE_IR_STANDALONEOPS_TD

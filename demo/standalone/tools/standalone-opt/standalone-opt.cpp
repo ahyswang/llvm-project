@@ -17,7 +17,7 @@
 #include "mlir/Tools/mlir-opt/MlirOptMain.h"
 
 #include "Standalone/IR/Standalone.h"
-#include "Standalone/Transforms/StandalonePasses.h"
+#include "Standalone/Transforms/Passes.h"
 
 int main(int argc, char **argv) {
   mlir::registerAllPasses();
