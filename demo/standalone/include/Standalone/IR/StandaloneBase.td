@@ -1,4 +1,4 @@
-//===- StandaloneDialect.td - Standalone dialect -----------*- tablegen -*-===//
+//===- StandaloneBase.td - Standalone dialect -----------*- tablegen -*-===//
 //
 // This file is licensed under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -6,8 +6,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef MLIR_DIALECT_STANDALONE_IR_STANDALONEDIALECT_TD
-#define MLIR_DIALECT_STANDALONE_IR_STANDALONEDIALECT_TD
+#ifndef MLIR_DIALECT_STANDALONE_IR_STANDALONEBASE_TD
+#define MLIR_DIALECT_STANDALONE_IR_STANDALONEBASE_TD
 
 include "mlir/IR/AttrTypeBase.td"
 include "mlir/IR/EnumAttr.td"
@@ -84,7 +84,7 @@ def Standalone_RoundingModeAttr
 
 def StandaloneOpInterface : OpInterface<"StandaloneOp"> {
   let description = [{
-    Implemented by ops that correspond to the Tosa specification.
+    Implemented by ops that correspond to the Standalone specification.
   }];
 }
 
@@ -144,4 +144,4 @@ class Standalone_ConvOp<string mnemonic, list<Trait> traits = []>
       "operands attr-dict `:` functional-type(operands, results)";
 }
 
-#endif // MLIR_DIALECT_STANDALONE_IR_STANDALONEDIALECT_TD
+#endif // MLIR_DIALECT_STANDALONE_IR_STANDALONEBASE_TD

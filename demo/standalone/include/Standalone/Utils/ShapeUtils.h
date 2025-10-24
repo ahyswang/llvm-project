@@ -9,8 +9,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef MLIR_DIALECT_TOSA_UTILS_SHAPEUTILS_H
-#define MLIR_DIALECT_TOSA_UTILS_SHAPEUTILS_H
+#ifndef MLIR_DIALECT_STANDALONE_UTILS_SHAPEUTILS_H
+#define MLIR_DIALECT_STANDALONE_UTILS_SHAPEUTILS_H
 
 #include "mlir/IR/BuiltinTypes.h"
 #include "mlir/IR/Types.h"
@@ -179,4 +179,4 @@ struct ValueKnowledge {
 } // namespace tosa
 } // namespace mlir
 
-#endif // MLIR_DIALECT_TOSA_UTILS_SHAPEUTILS_H
+#endif // MLIR_DIALECT_STANDALONE_UTILS_SHAPEUTILS_H

@@ -41,14 +41,14 @@ void StandaloneDialect::initialize() {
 #define GET_TYPEDEF_LIST
 #include "Standalone/IR/StandaloneOpsTypes.cpp.inc"
       >();
+  addAttributes<
+#define GET_ATTRDEF_LIST
+#include "Standalone/IR/StandaloneAttributes.cpp.inc"
+      >();
   addOperations<
 #define GET_OP_LIST
 #include "Standalone/IR/StandaloneOps.cpp.inc"
       >();
-// addAttributes<
-// #define GET_ATTRDEF_LIST
-// #include #include "Standalone/IR/StandaloneOps.cpp.inc"
-//       >();
 }
 
 // TODO

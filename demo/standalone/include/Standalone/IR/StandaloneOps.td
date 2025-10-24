@@ -17,7 +17,96 @@ include "mlir/Interfaces/LoopLikeInterface.td"
 include "mlir/Bytecode/BytecodeOpInterface.td"
 
 include "Standalone/IR/StandaloneTypes.td"
-include "Standalone/IR/StandaloneDialect.td"
+include "Standalone/IR/StandaloneBase.td"
+
+//===----------------------------------------------------------------------===//
+// Operator Class: Bitwise Operators.
+//===----------------------------------------------------------------------===//
+
+
+
+//===----------------------------------------------------------------------===//
+// Operator Class: Tensor Operators.
+//===----------------------------------------------------------------------===//
+
+
+//===----------------------------------------------------------------------===//
+// Operator Class: Activation Functions.
+//===----------------------------------------------------------------------===//
+
+//===----------------------------------------------------------------------===//
+// Operator: clamp
+//===----------------------------------------------------------------------===//
+def Standalone_ClampOp : Standalone_ElementwiseUnaryOp<"clamp"> {
+  let summary = "Computes clamp(features, min, max).";
+
+  let description = [{
+    Clamp to an arbitrary minimum and maximum value.
+    Maximum and minimum values are specified as values in the range of the
+    input type.
+    No zero point subtraction is done to the values, thus to clamp to the zero
+    point value, the zero point itself should be supplied as the minimum value.
+  }];
+
+  let arguments = (ins
+    Standalone_Tensor:$input,
+    Standalone_IntOrFloatAttr:$min_val,
+    Standalone_IntOrFloatAttr:$max_val,
+    DefaultValuedAttr<Standalone_NanPropagationModeAttr, "::mlir::standalone::NanPropagationMode::PROPAGATE">:$nan_mode
+  );
+
+  let results = (outs
+    Standalone_Tensor:$output
+  );
+
+  //let hasCanonicalizer = 1;
+  //let hasVerifier = 1;
+  let hasCustomAssemblyFormat = 1;
+}
+
+//===----------------------------------------------------------------------===//
+// Operator Class: Elementwise Binary Operators.
+//===----------------------------------------------------------------------===//
+
+
+//===----------------------------------------------------------------------===//
+// Operator Class: Reduction Operators.
+//===----------------------------------------------------------------------===//
+
+
+//===----------------------------------------------------------------------===//
+// Operator Class: Data Layout.
+//===----------------------------------------------------------------------===//
+
+
+//===----------------------------------------------------------------------===//
+// Operator Class: Scatter/Gather Operators.
+//===----------------------------------------------------------------------===//
+
+
+//===----------------------------------------------------------------------===//
+// Operator Class: Image Operators.
+//===----------------------------------------------------------------------===//
+
+
+//===----------------------------------------------------------------------===//
+// Operator Class: Type Conversion.
+//===----------------------------------------------------------------------===//
+
+
+//===----------------------------------------------------------------------===//
+// Operator Class: Data Nodes.
+//===----------------------------------------------------------------------===//
+
+
+//===----------------------------------------------------------------------===//
+// Operator Class: Custom Operators.
+//===----------------------------------------------------------------------===//
+
+
+//===----------------------------------------------------------------------===//
+// Operator Class: Control Flow Operators.
+//===----------------------------------------------------------------------===//
 
 
 def Standalone_FooOp : Standalone_Op<"foo", [Pure,
@@ -77,13 +166,12 @@ def Standalone_AddOp: Standalone_ElementwiseOp<"add", [
   }];
 
   let arguments = (ins
-    //Variadic<AnyTensor>:$inputs
-    AnyTensor:$input1,
-    AnyTensor:$input2
+    Standalone_Tensor:$input1,
+    Standalone_Tensor:$input2
   );
 
   let results = (outs 
-    AnyTensor:$output
+    Standalone_Tensor:$output
   );
   //let hasCanonicalizer = 1;
   let hasFolder = 1;

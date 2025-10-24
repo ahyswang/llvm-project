@@ -34,7 +34,11 @@ namespace standalone {
 #define GET_TYPEDEF_CLASSES
 #include "Standalone/IR/StandaloneOpsTypes.h.inc"
 
+#define GET_ATTRDEF_CLASSES
+#include "Standalone/IR/StandaloneAttributes.h.inc"
+
 #define GET_OP_CLASSES
 #include "Standalone/IR/StandaloneOps.h.inc"
+
 
 #endif // MLIR_DIALECT_STANDALONE_IR_STANDALONE_H
