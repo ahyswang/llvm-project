@@ -1,6 +1,6 @@
 include(AddMLIRPython)
 
-# Specifies that all MLIR packages are co-located under the `mlir_llnir`
+# Specifies that all MLIR packages are co-located under the `llnmlir`
 # top level package (the API has been embedded in a relocatable way).
 add_compile_definitions("MLIR_PYTHON_PACKAGE_PREFIX=${MLIR_PYTHON_PACKAGE_PREFIX}.")
 
@@ -13,7 +13,7 @@ declare_mlir_python_sources(LLNIRPythonSources)
 
 declare_mlir_dialect_python_bindings(
   ADD_TO_PARENT LLNIRPythonSources
-  ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/mlir_llnir"
+  ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/llnmlir"
   TD_FILE dialects/LLNIROps.td
   SOURCES
     dialects/llnir_pybind11.py
