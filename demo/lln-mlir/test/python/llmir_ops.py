@@ -44,6 +44,9 @@ def test_module():
         
         # Print the module with location information
         print("Result of module:\n")
+
+        # CHECK: %[[C:.*]] = "llnir.const"() <{values = dense<[1, 2, 3, 4]> : tensor<4xi8>}> : () -> tensor<4xi8>
+        # CHECK: %[[R:.*]] = "llnir.add"(%[[C]], %[[C]]) : (tensor<4xi8>, tensor<4xi8>) -> tensor<4xi8>
         module.operation.print(print_generic_op_form=True)
 
 if __name__ == "__main__":

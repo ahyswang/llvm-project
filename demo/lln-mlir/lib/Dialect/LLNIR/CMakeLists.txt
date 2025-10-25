@@ -1,4 +1,5 @@
 file(GLOB OPS_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Ops/*.cpp")
+file(GLOB CANONICALIZE_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Canonicalize/*.cpp")
 
 add_mlir_dialect_library(MLIRLLNIR
         IR/LLNIRBase.cpp
@@ -7,6 +8,7 @@ add_mlir_dialect_library(MLIRLLNIR
         Transforms/LLNIRInferShapes.cpp
         Utils/BaseUtils.cpp
         ${OPS_SOURCES}
+        ${CANONICALIZE_SOURCES}
 
         ADDITIONAL_HEADER_DIRS
         ${PROJECT_SOURCE_DIR}/include/LLNIR

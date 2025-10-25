@@ -10,4 +10,4 @@ cmake -B./build \
 -DLLVM_EXTERNAL_LIT=$BUILD_DIR/bin/llvm-lit \
 -DCMAKE_BUILD_TYPE=Debug
 
-cmake --build ./build --target check-llnir -j16
+cmake --build ./build --target check-llnmlir -j16

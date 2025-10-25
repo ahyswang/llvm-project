@@ -1,4 +1,4 @@
-// RUN: llnir-opt %s > %t 
+// RUN: llnmlir-opt %s > %t 
 // RUN: FileCheck %s < %t
 
 !quant_type = !quant.uniform<i8:f32, 0.078431375324726104>

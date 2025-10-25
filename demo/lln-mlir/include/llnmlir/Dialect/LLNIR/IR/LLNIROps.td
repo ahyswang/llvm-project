@@ -59,8 +59,8 @@ def LLNIR_ClampOp : LLNIR_ElementwiseUnaryOp<"clamp"> {
     LLNIR_Tensor:$output
   );
 
-  //let hasCanonicalizer = 1;
-  //let hasVerifier = 1;
+  let hasCanonicalizer = 1;
+  let hasVerifier = 1;
   let hasCustomAssemblyFormat = 1;
 }
 
@@ -567,5 +567,29 @@ def LLNIR_Conv2DOp : LLNIR_ConvOp<"conv2d"> {
   //let hasVerifier = 1;
 }
 
+//===----------------------------------------------------------------------===//
+// Operator: matmul
+//===----------------------------------------------------------------------===//
+def LLNIR_MatMulOp : LLNIR_InferShapedTypeOp<"matmul"> {
+  let summary = "Matrix multiplication operator.";
+
+  let description = [{
+    Performs two dimensional matrix multiplications.
+  }];
+
+  let arguments = (ins
+    LLNIR_Tensor3D:$a,
+    LLNIR_Tensor3D:$b
+  );
+
+  let results = (outs
+    LLNIR_Tensor3D:$output
+  );
+
+  //let builders = [LLNIR_ConvOpQuantInfoBuilder];
+
+  //let hasCanonicalizer = 1;
+  //let hasVerifier = 1;
+}
 
 #endif // MLIR_DIALECT_LLNIR_IR_LLNIROPS_TD

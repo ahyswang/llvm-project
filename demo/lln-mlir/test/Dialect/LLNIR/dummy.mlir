@@ -1,4 +1,4 @@
-// RUN: llnir-opt %s | llnir-opt | FileCheck %s
+// RUN: llnmlir-opt %s | llnmlir-opt | FileCheck %s
 
 module {
     // CHECK-LABEL: func @bar()

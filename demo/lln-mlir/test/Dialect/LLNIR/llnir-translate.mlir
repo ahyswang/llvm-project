@@ -1,4 +1,4 @@
-// RUN: llnir-translate --help | FileCheck %s
+// RUN: llnmlir-translate --help | FileCheck %s
 // CHECK: --deserialize-spirv
 // CHECK: --import-llvm
 // CHECK: --mlir-to-llvmir

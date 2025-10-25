@@ -1,4 +1,4 @@
-// RUN: llnir-opt %s > %t 
+// RUN: llnmlir-opt %s > %t 
 // RUN: FileCheck %s < %t
 
 // -----
@@ -49,4 +49,17 @@ func.func @test_op_xor(%arg0: tensor<2x8xi8>, %arg1: tensor<2x8xi8>) -> tensor<2
 func.func @test_op_not(%arg0: tensor<2x8xi8>, %arg1: tensor<2x8xi8>) -> tensor<2x8xi8> {
     %res = "llnir.bitwise_not"(%arg0) : (tensor<2x8xi8>)-> tensor<2x8xi8>
     return %res : tensor<2x8xi8>
+}
+
+// -----
+// CHECK-LABEL: clamp
+func.func @test_clamp(%arg0: tensor<2x8xi8>, %arg1: tensor<2x8xi8>) -> tensor<2x8xi8> {
+    %res = "llnir.clamp"(%arg0) {min_val = 0 : i8 , max_val = 10: i8}: (tensor<2x8xi8>)-> tensor<2x8xi8>
+    return %res : tensor<2x8xi8>
+}
+
+// CHECK-LABEL: test_matmul
+func.func @test_matmul(%arg0: tensor<1x14x19xf32>, %arg1: tensor<1x19x28xf32>) -> tensor<1x14x28xf32> {
+%0 = "llnir.matmul" (%arg0, %arg1) : (tensor<1x14x19xf32>, tensor<1x19x28xf32>)  -> tensor<1x14x28xf32>
+  return %0 : tensor<1x14x28xf32>
 }

@@ -1,4 +1,4 @@
-// RUN: llnir-opt  --llnir-infer-shapes --canonicalize %s > %t 
+// RUN: llnmlir-opt  --llnir-infer-shapes --canonicalize %s > %t 
 // RUN: FileCheck %s < %t
 
 // -----

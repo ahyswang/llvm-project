@@ -26,34 +26,3 @@ with Context() as ctx:
     # CHECK: %[[C:.*]] = arith.constant 2 : i32
     # CHECK: llnir.foo %[[C]] : i32
     print(str(module))
-
-
-import numpy as np 
-with Context() as ctx:
-    llnir_d.register_dialect()
-
-    module = Module.create(loc=Location.unknown())
-    with InsertionPoint(module.body):
-        # Create an i8 type and a tensor type
-        i8 = IntegerType.get_signless(8)
-        i8_tensor = RankedTensorType.get([4], i8, loc=Location.unknown())
-        # Create a DenseElementsAttr
-        value = DenseElementsAttr.get(
-            np.array([1, 2, 3, 4], dtype=np.int8),
-            type=RankedTensorType.get([4], IntegerType.get_signless(8, context=ctx), loc=Location.unknown()),
-        )
-        # Create a constant operation
-        const_op = llnir_d.ConstOp(
-            values=value,
-            results=[i8_tensor],
-            loc=Location.unknown(),
-        )
-        #import pdb; pdb.set_trace()
-        add_op = llnir_d.AddOp(
-            input1=const_op.results[0], 
-            input2=const_op.results[0],
-            output=i8_tensor,
-            loc=Location.unknown(),
-        )
-    
-    print("Result of module:", module)

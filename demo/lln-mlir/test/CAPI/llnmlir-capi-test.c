@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-// RUN: llnir-capi-test 2>&1 | FileCheck %s
+// RUN: llnmlir-capi-test 2>&1 | FileCheck %s
 
 #include <stdio.h>
 

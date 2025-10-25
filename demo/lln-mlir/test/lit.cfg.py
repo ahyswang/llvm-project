@@ -27,7 +27,7 @@ config.suffixes = [".mlir"]
 config.test_source_root = os.path.dirname(__file__)
 
 # test_exec_root: The root path where tests should be run.
-config.test_exec_root = os.path.join(config.llnir_obj_root, "test")
+config.test_exec_root = os.path.join(config.llnmlir_obj_root, "test")
 
 config.substitutions.append(("%PATH%", config.environment["PATH"]))
 config.substitutions.append(("%shlibext", config.llvm_shlib_ext))
@@ -42,21 +42,21 @@ llvm_config.use_default_substitutions()
 config.excludes = ["Inputs", "Examples", "CMakeLists.txt", "README.txt", "LICENSE.txt"]
 
 # test_exec_root: The root path where tests should be run.
-config.test_exec_root = os.path.join(config.llnir_obj_root, "test")
-config.llnir_tools_dir = os.path.join(config.llnir_obj_root, "bin")
-config.llnir_libs_dir = os.path.join(config.llnir_obj_root, "lib")
+config.test_exec_root = os.path.join(config.llnmlir_obj_root, "test")
+config.llnmlir_tools_dir = os.path.join(config.llnmlir_obj_root, "bin")
+config.llnmlir_libs_dir = os.path.join(config.llnmlir_obj_root, "lib")
 
-config.substitutions.append(("%llnir_libs", config.llnir_libs_dir))
+config.substitutions.append(("%llnir_libs", config.llnmlir_libs_dir))
 
 # Tweak the PATH to include the tools dir.
 llvm_config.with_environment("PATH", config.llvm_tools_dir, append_path=True)
 
-tool_dirs = [config.llnir_tools_dir, config.llvm_tools_dir]
+tool_dirs = [config.llnmlir_tools_dir, config.llvm_tools_dir]
 tools = [
     "mlir-opt",
-    "llnir-capi-test",
-    "llnir-opt",
-    "llnir-translate",
+    "llnmlir-capi-test",
+    "llnmlir-opt",
+    "llnmlir-translate",
 ]
 
 llvm_config.add_tool_substitutions(tools, tool_dirs)
@@ -64,7 +64,7 @@ llvm_config.add_tool_substitutions(tools, tool_dirs)
 llvm_config.with_environment(
     "PYTHONPATH",
     [
-        os.path.join(config.mlir_obj_dir, "python_packages", "llnir"),
+        os.path.join(config.mlir_obj_dir, "python_packages", "llm-mlir"),
     ],
     append_path=True,
 )

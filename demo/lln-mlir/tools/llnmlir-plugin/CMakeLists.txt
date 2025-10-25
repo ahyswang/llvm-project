@@ -14,5 +14,5 @@ add_llvm_library(LLNMLIRPlugin
 target_include_directories(
         LLNMLIRPlugin
         PRIVATE
-        "${LLNIR_BINARY_DIR}/include"
+        "${LLNMLIR_BINARY_DIR}/include"
 )

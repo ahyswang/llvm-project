@@ -22,11 +22,11 @@ if(MLIR_ENABLE_BINDINGS_PYTHON)
   list(APPEND LLNIR_TEST_DEPENDS LLNIRPythonModules)
 endif()
 
-add_lit_testsuite(check-llnir "Running the llnir regression tests"
+add_lit_testsuite(check-llnmlir "Running the llnmlir regression tests"
         ${CMAKE_CURRENT_BINARY_DIR}
         DEPENDS ${LLNIR_TEST_DEPENDS}
         )
-set_target_properties(check-llnir PROPERTIES FOLDER "Tests")
+set_target_properties(check-llnmlir PROPERTIES FOLDER "Tests")
 
 add_lit_testsuites(LLNIR ${CMAKE_CURRENT_SOURCE_DIR} DEPENDS ${LLNIR_TEST_DEPENDS})
 

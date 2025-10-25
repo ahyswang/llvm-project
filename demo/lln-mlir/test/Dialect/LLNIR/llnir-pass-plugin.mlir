@@ -1,5 +1,5 @@
 // UNSUPPORTED: system-windows
-// RUN: mlir-opt %s --load-pass-plugin=%llnir_libs/LLNIRPlugin%shlibext --pass-pipeline="builtin.module(llnir-switch-bar-foo)" | FileCheck %s
+// RUN: mlir-opt %s --load-pass-plugin=%llnir_libs/LLNMLIRPlugin%shlibext --pass-pipeline="builtin.module(llnir-switch-bar-foo)" | FileCheck %s
 
 module {
   // CHECK-LABEL: func @foo()
