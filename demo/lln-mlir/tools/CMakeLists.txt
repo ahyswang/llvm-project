@@ -1,0 +1,5 @@
+add_subdirectory(llnmlir-opt)
+if(NOT WIN32)
+  add_subdirectory(llnmlir-plugin)
+endif()
+add_subdirectory(llnmlir-translate)

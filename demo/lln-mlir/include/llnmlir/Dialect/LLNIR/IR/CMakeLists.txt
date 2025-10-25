@@ -1,0 +1,21 @@
+add_mlir_dialect(LLNIROps llnir)
+add_mlir_doc(LLNIRBase LLNIRBase LLNIR/ -gen-dialect-doc)
+add_mlir_doc(LLNIROps LLNIROps LLNIR/ -gen-op-doc)
+
+set(LLVM_TARGET_DEFINITIONS  LLNIROps.td)
+mlir_tablegen(LLNIROpsTypesBase.h.inc -gen-typedef-decls -typedefs-dialect=llnir)
+mlir_tablegen(LLNIROpsTypesBase.cpp.inc -gen-typedef-defs -typedefs-dialect=llnir)
+mlir_tablegen(LLNIRAttributes.h.inc -gen-attrdef-decls -attrdefs-dialect=llnir)
+mlir_tablegen(LLNIRAttributes.cpp.inc -gen-attrdef-defs -attrdefs-dialect=llnir)
+add_mlir_dialect_tablegen_target(MLIRLLNIRAttributesIncGen)
+
+set(LLVM_TARGET_DEFINITIONS LLNIRBase.td)
+mlir_tablegen(LLNIRInterfaces.h.inc -gen-op-interface-decls)
+mlir_tablegen(LLNIRInterfaces.cpp.inc -gen-op-interface-defs)
+add_public_tablegen_target(LLNIRInterfacesIncGen)
+add_dependencies(mlir-headers LLNIRInterfacesIncGen)
+
+set(LLVM_TARGET_DEFINITIONS LLNIRBase.td)
+mlir_tablegen(LLNIREnums.h.inc -gen-enum-decls)
+mlir_tablegen(LLNIREnums.cpp.inc -gen-enum-defs)
+add_mlir_dialect_tablegen_target(MLIRLLNIREnumsIncGen)
