@@ -8,6 +8,8 @@
 #ifndef MLIR_DIALECT_LLNIR_TRANSFORMS_PASSES_TD
 #define MLIR_DIALECT_LLNIR_TRANSFORMS_PASSES_TD
 
+#include "llnmlir/Dialect/LLNIR/Transforms/ShapeReification.h"
+
 #include "llnmlir/Dialect/LLNIR/IR/LLNIR.h"
 #include "mlir/Pass/Pass.h"
 #include <memory>
