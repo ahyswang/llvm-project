@@ -4,6 +4,7 @@ set(LIBS
     MLIRRegisterAllDialects
     MLIRRegisterAllPasses
     MLIRLLNIR
+    MLIRLLNIRToNPU
   )
 add_llvm_executable(llnmlir-opt llnmlir-opt.cpp)
 

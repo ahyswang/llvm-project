@@ -1,4 +1,3 @@
-git clone 
 # conda create -n pymlir python=3.10
 # conda activate pymlir
 # python -m pip install --upgrade pip

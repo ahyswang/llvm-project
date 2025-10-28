@@ -18,10 +18,12 @@
 
 #include "llnmlir/Dialect/LLNIR/IR/LLNIR.h"
 #include "llnmlir/Dialect/LLNIR/Transforms/Passes.h"
+#include "llnmlir/Conversion/Passes.h"
 
 int main(int argc, char **argv) {
   mlir::registerAllPasses();
   mlir::llnir::registerLLNIROptPasses();
+  mlir::registerConversionPasses();
   // TODO: Register llnir passes here.
 
   mlir::DialectRegistry registry;
