@@ -1680,6 +1680,13 @@ def HasVendorXSMTVDot
       AssemblerPredicate<(all_of FeatureVendorXSMTVDot),
                          "'XSMTVDot' (SpacemiT Vector Dot Product Extension)">;
 
+def FeatureVendorXcustomadd
+    : RISCVExtension<1, 0, "Custom Addition Instruction">;
+def HasVendorXcustomadd
+    : Predicate<"Subtarget->hasVendorXcustomadd()">,
+      AssemblerPredicate<(all_of FeatureVendorXcustomadd),
+                         "'Xcustomadd' (Custom Addition Instruction)">;
+
 //===----------------------------------------------------------------------===//
 // LLVM specific features and extensions
 //===----------------------------------------------------------------------===//
