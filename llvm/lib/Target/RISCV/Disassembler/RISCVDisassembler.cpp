@@ -690,6 +690,9 @@ static constexpr DecoderListEntry DecoderList32[]{
     {DecoderTableXMIPS32, XMIPSGroup, "Mips extensions"},
     {DecoderTableXAndes32, XAndesGroup, "Andes extensions"},
     {DecoderTableXSMT32, XSMTGroup, "SpacemiT extensions"},
+    {DecoderTableXcustomadd32,
+     {RISCV::FeatureVendorXcustomadd},
+     "Xcustomadd"},
     // Standard Extensions
     {DecoderTable32, {}, "standard 32-bit instructions"},
     {DecoderTableRV32Only32, {}, "RV32-only standard 32-bit instructions"},
