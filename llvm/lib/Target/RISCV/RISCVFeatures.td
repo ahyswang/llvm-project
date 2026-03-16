@@ -1117,6 +1117,14 @@ def HasStdExtZbbOrZbkbOrP
 // Vendor extensions
 //===----------------------------------------------------------------------===//
 
+// Custom Add Extension
+
+def FeatureVendorXcustomadd
+    : RISCVExtension<1, 0, "Custom Addition Extension">;
+def HasVendorXcustomadd : Predicate<"Subtarget->hasVendorXcustomadd()">,
+                          AssemblerPredicate<(all_of FeatureVendorXcustomadd),
+                              "'Xcustomadd' (Custom Addition Extension)">;
+
 // Ventana Extensions
 
 def FeatureVendorXVentanaCondOps
